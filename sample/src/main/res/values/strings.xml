@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">App Versioning</string>
+
+    <string name="app_version_name">App Version Name</string>
+    <string name="url">Url</string>
+    <string name="action_check_version_status">Check Version Status</string>
+</resources>

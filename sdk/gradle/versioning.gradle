@@ -1,0 +1,45 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.ajoberstar.grgit:grgit-gradle:' + grgitVersion
+    }
+}
+
+import org.ajoberstar.grgit.Grgit
+
+def generateVersionCode = {
+    return gitVersionCode
+}
+
+def generateVersionName = {
+    return gitVersionName
+}
+
+ext {
+    try {
+        git = Grgit.open(currentDir: projectDir)
+        gitVersionName = git.describe(tags: true)
+        gitVersionCode = git.tag.list().size()
+        gitVersionCodeTime = git.head().time
+    } catch (Exception ignored) {
+        gitVersionName = null
+        gitVersionCode = null
+    }
+}
+
+ext {
+    generatedVersionCode = generateVersionCode()
+    generatedVersionName = generateVersionName()
+}
+
+task printVersion() {
+    doLast {
+        println("Version Name: $generatedVersionName")
+        println("Version Code: $generatedVersionCode")
+        println("Git Version Name: $gitVersionName")
+        println("Git Version Code: $gitVersionCode")
+        println("Git Version Code Time: $gitVersionCodeTime")
+    }
+}
