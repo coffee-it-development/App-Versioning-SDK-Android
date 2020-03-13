@@ -3,6 +3,7 @@ buildscript {
     ext {
         kotlinVersion = '1.3.70'
         grgitVersion = '3.1.1'
+        dokkaVersion = '0.10.1'
     }
 
     repositories {
@@ -14,6 +15,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:3.5.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "org.ajoberstar.grgit:grgit-gradle:$grgitVersion"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVersion"
     }
 }
 

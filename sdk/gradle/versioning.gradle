@@ -14,7 +14,7 @@ def generateVersionCode = {
 }
 
 def generateVersionName = {
-    return gitVersionName
+    return gitVersionName ?: '0.0.2'
 }
 
 ext {

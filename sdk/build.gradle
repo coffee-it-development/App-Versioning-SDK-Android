@@ -1,8 +1,10 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'org.jetbrains.dokka'
 apply from: 'gradle/versioning.gradle'
 apply from: 'gradle/publishing.gradle'
+apply from: 'gradle/sonatype-deployment.gradle'
 
 android {
     compileSdkVersion 29
@@ -50,4 +52,9 @@ dependencies {
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
+
+dokka {
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/dokka"
 }

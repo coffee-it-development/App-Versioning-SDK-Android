@@ -1,0 +1,65 @@
+apply plugin: 'signing'
+apply plugin: 'maven'
+
+signing {
+    sign configurations.archives
+}
+
+group = "nl.coffeeit.appversioning"
+archivesBaseName = "appversioning"
+version = generatedVersionName ?: "0.0.1"
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def ossrhUsername = properties.getProperty('ossrhUsername') ?: ''
+def ossrhPassword = properties.getProperty('ossrhPassword') ?: ''
+
+// Build, sign, and upload
+uploadArchives {
+    repositories {
+        mavenDeployer {
+
+            // Sign POM
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            // Destination
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            // Add required metadata to POM
+            pom.project {
+                name 'App Versioning SDK'
+                packaging 'aar'
+                description 'Library for managing app versions'
+                url 'https://github.com/coffee-it-development/App-Versioning-SDK-Android'
+
+                scm {
+                    connection 'scm:git:git://github.com/coffee-it-development/App-Versioning-SDK-Android.git'
+                    developerConnection 'scm:git:ssh://github.com/coffee-it-development/App-Versioning-SDK-Android.git'
+                    url 'https://github.com/coffee-it-development/App-Versioning-SDK-Android/tree/master'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'wesselbarten'
+                        name 'Wessel Barten'
+                        email 'barten@coffeeit.nl'
+                        organization 'Coffee IT'
+                        organizationUrl 'https://coffeeit.nl'
+                    }
+                }
+            }
+        }
+    }
+}

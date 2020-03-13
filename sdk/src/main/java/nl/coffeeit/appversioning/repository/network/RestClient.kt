@@ -1,6 +1,6 @@
 package nl.coffeeit.appversioning.repository.network
 
-import nl.coffeeit.appversioning.repository.network.interceptor.AppVersionStatusHeaderInterceptor
+import nl.coffeeit.appversioning.repository.network.interceptor.AddRequestHeadersInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
@@ -36,9 +36,7 @@ class RestClient internal constructor(
             builder.addInterceptor(loggingInterceptor)
         }
 
-        builder.addInterceptor(
-            AppVersionStatusHeaderInterceptor(versionName)
-        )
+        builder.addInterceptor(AddRequestHeadersInterceptor(versionName))
 
         return builder.build()
     }
